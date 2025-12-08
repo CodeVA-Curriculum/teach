@@ -1,0 +1,16 @@
+@use "@picocss/pico/scss/pico";
+
+@use "./theme.scss";
+p {
+  margin-bottom: 1.5rem;
+}
+section {
+  margin-top: 3rem;
+}
+
+button {
+    padding-left: 0.5rem;
+  span {
+    padding: 0.5rem;
+  }
+}
