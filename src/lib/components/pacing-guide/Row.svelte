@@ -1,12 +1,16 @@
 <script lang='ts'>
   import Carousel from '$lib/components/pacing-guide/Carousel.svelte'
   import Editable from '$lib/components/pacing-guide/Editable.svelte'
+
   import Fa from 'svelte-fa'
   import { faPencil, faPlus, faTrash, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons'
+  import StandardsSelect from './StandardsSelect.svelte';
 
  let { row = $bindable(), first, last, operations }= $props();
   let editable:any = $state()
   let editingState = false;
+
+  let selectedSOLs = $state([])
 </script>
 <tr>
   <td>
@@ -21,27 +25,26 @@
   </td>
   <td class='sols'>
     <div class='td-wrap'>
-    <button style='width: 100%;'>
-      <Fa icon={faPlus} />
-      <span>Add</span>
-    </button>
+    <StandardsSelect bind:selectedIds={selectedSOLs} />
+    </div>
+  </td>
+  <td class='carousel'>
+    <div class='td-wrap'>
+      <Carousel sols={selectedSOLs} />
     </div>
   </td>
   <td>
-    <div class='td-wrap'>
-      <Carousel />
+    <div class='td-wrap ui'>
+      <button id="up" disabled={first} onclick={() => operations.up(operations.id)}>
+        <Fa icon={faArrowUp} />
+      </button>
+      <button id="down" disabled={last} onclick={operations.down}>
+        <Fa icon={faArrowDown} />
+      </button>
+      <button id="delete" onclick={operations.delete}>
+        <Fa icon={faTrash} />
+      </button>
     </div>
-  </td>
-  <td class='ui'>
-    <button id="up" disabled={first} onclick={() => operations.up(operations.id)}>
-      <Fa icon={faArrowUp} />
-    </button>
-    <button id="down" disabled={last} onclick={operations.down}>
-      <Fa icon={faArrowDown} />
-    </button>
-    <button id="delete" onclick={operations.delete}>
-      <Fa icon={faTrash} />
-    </button>
   </td>
 </tr>
 
@@ -50,7 +53,7 @@
   td {
     position: relative;
     border: 1px solid #e7eaf0;
-    height: 8rem;
+    // min-height: 10rem;
     padding: 0;
   }
   .ui {
@@ -70,15 +73,21 @@
     }
   }
   .description {
-    min-width: 500px;
+    // min-width: 800px;
     // border: 1px solid red;
+    flex-grow: 4;
   }
   .sols {
-    min-width: 250px;
+    // min-width: 275px;
     & button {
       background-color: white;
       color: black;
     }
+    flex-grow: 0;
+  }
+  .carousel {
+      flex-grow: 0;
+      max-width: 400px;
   }
   button:hover {
     span { display: inline-block; }
@@ -86,8 +95,7 @@
   .td-wrap {
     display: flex;
     flex-direction: column;
-    height: 7rem;
-    padding-left: 8px;
-    padding-right: 8px;
+    height: 11rem;
+    padding: 8px;  
   }
 </style>

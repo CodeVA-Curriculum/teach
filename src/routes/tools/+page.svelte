@@ -6,7 +6,7 @@
   <section>
     <article>
       <div class='thumbnail'>
-        <img src="https://placecats.com/600/400" alt="The pacing guide creator tool, a table with editable cells" />
+        <img src="/pacing-guide.png" alt="The pacing guide creator tool, a table with editable cells" />
       </div>
       
       <div class='article-body'>
@@ -40,7 +40,7 @@
       justify-content: left;
       align-items: center;
       a {
-        flex-basis: 33%;
+        width: 100%;
       }
     }
   }

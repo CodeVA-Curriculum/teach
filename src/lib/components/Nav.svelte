@@ -1,7 +1,7 @@
 <nav>
   <ul>
     <li>
-      <img width=50 src="https://placecats.com/200/200" alt="brand logo" />
+      <img width=60 src="/logo.png" alt="brand logo" />
     </li>
   </ul>
   <ul>
@@ -10,11 +10,14 @@
   </ul>
 </nav>
 <style lang='scss'>
-  @import "$lib/styles/theme.scss";
+  @use "$lib/styles/theme.scss";
   nav {
     padding-left: 1rem;
     padding-right: 1rem;
     margin-bottom: 3rem;
-    background-color: $navy;
+    background-color: theme.$navy;
+  }
+  a {
+    color: white;
   }
 </style>

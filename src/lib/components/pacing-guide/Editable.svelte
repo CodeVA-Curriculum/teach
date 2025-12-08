@@ -8,17 +8,18 @@
   function save() {
     text = content
     editing = false
+    console.log("saving", editing)
   }
 </script>
 <div class='edit'>
 {#if editing || text.length == 0}
- <input bind:value={content} type="textarea" />
+<textarea bind:value={content} rows=3></textarea>
 <button class='little-edit' onclick={save}>
   <Fa icon={faSave} />
   <span>Save</span>
 </button>
-{:else}
- <div> {text}</div>
+{:else if editing == false}
+ <div>{text}</div>
  {/if}
  </div>
 
@@ -29,7 +30,7 @@
     // display: flex;
     // flex-direction: column;
     // border: 1px solid blue;
-    height: 7rem;
+    // height: 7rem;
   }
   button.empty-edit {
     background-color: white;
@@ -39,18 +40,20 @@
   }
   button.little-edit {
     font-size: 12pt;
-  height: 40px;
-  background-color: white;
-  color: black;
+    height: 40px;
+    background-color: white;
+    color: black;
     padding: 0;
     padding-left: 0.5rem;
-    margin-top: 10px;
+    // margin-top: 10px;
     float: right;
     position: relative;
     // top: 2rem;
   }
-  input {
+  textarea {
     font-size: 14pt;
+    padding-bottom: 0;
+    margin-bottom: 10px;
   }
   .description {
   min-height: 100px;

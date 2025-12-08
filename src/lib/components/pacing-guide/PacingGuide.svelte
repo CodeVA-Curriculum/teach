@@ -47,7 +47,7 @@
       <th scope="col">Unit</th>
       <th scope="col">Description</th>
       <th scope="col">Standards</th>
-      <th scope="col">CS Lessons & Resources</th>
+      <th scope="col">CS Suggestions</th>
       <th style="text-align: center; display: none;"><Fa icon={faTrash} /></th>
     </tr>
 
