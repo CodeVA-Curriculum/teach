@@ -75,6 +75,10 @@
   }
   .sols {
     min-width: 250px;
+    & button {
+      background-color: white;
+      color: black;
+    }
   }
   button:hover {
     span { display: inline-block; }
