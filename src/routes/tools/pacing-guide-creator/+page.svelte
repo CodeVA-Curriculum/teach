@@ -1,5 +1,13 @@
 <script lang='ts'>
+  import type { PageProps } from './$types';
   import PacingGuide from "$lib/components/pacing-guide/PacingGuide.svelte"
+    import { onMount } from "svelte";
+
+    let { data }:PageProps = $props()
+
+  // onMount(() => {
+  //   console.log(data)
+  // })
 </script>
 <div class='container'>
   <section>
@@ -17,7 +25,7 @@
     </article>
   </section>
   <section>
-    <PacingGuide />
+    <PacingGuide elements={data} />
   </section>
 </div>
 

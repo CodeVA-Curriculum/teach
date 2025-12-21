@@ -6,7 +6,7 @@
   import { faPencil, faPlus, faTrash, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons'
   import StandardsSelect from './StandardsSelect.svelte';
 
- let { row = $bindable(), first, last, operations }= $props();
+ let { row = $bindable(), first, last, operations, elements }= $props();
   let editable:any = $state()
   let editingState = false;
 
@@ -30,7 +30,7 @@
   </td>
   <td class='carousel'>
     <div class='td-wrap'>
-      <Carousel sols={selectedSOLs} />
+      <Carousel sols={selectedSOLs} elements={elements} />
     </div>
   </td>
   <td>

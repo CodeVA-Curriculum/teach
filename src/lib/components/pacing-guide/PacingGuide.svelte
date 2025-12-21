@@ -4,6 +4,9 @@
   import { Row } from './types.svelte.ts'
   import RowComponent from '$lib/components/pacing-guide/Row.svelte'
     import Editable from './Editable.svelte';
+
+
+  let { elements } = $props()
   let rows:any[] = $state([new Row(1)])
 
   function addRow():undefined {
@@ -59,6 +62,7 @@
         last={i==rows.length-1}
         first={i==0}
         operations={opsFactory(i)}
+        elements={elements}
       />
     {/each}
     <tr>

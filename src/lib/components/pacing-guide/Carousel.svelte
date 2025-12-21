@@ -1,58 +1,72 @@
 <script lang='ts'>
   import Fa from 'svelte-fa'
   import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons'
+  import { getFilter, filterFrontmatter, renderGradesAsIndices } from './util';
+  import { page } from '$app/stores'
 
-  let { sols } = $props()
+  let { sols, elements } = $props()
 
   let lessons = $state([])
   let loaded = $state(false)
+  let position = $state(0)
 
   async function load() {
-    let url = "https://curriculum.codevirginia.org/api/library/k-8-lessons/food-chain-algorithms.json"
-    // for(const id of sols) {
-    //   url += "sol=" + id + "&"
-    // }
-    const res = await (await fetch(url)).json()
-    // https://docs.google.com/document/d/1_NNnWXrd5p8tU29M0L1M_lBuXGGJXRczbqOvGy-ZsOQ/edit
-    const driveURL = res.frontmatter.links.drive.replace("https://docs.google.com/document/d/", '').replace('/edit', '')
-    res.thumbnail = `https://curriculum.codevirginia.org/thumbnails/${driveURL}.png`
-    lessons.push(res)
-    console.log(lessons)
+    let params = new URLSearchParams()
+    for(let i=0;i<sols.length;i++) {
+      params.append("sol", sols[i])
+    }
+    let filter = await getFilter(params, elements.meta)
+    const res = await filterFrontmatter(filter, elements.frontmatters)
+    lessons.push(...res.results)
     loaded = true
+  }
+  function next() {
+    position++
+    if(position > lessons.length-1) { position = 0 }
+    console.log(position)
+  }
+  function prev() {
+    position--
+    if(position < 0) {position = lessons.length-1}
+    console.log(position)
   }
 </script>
 <div class='carousel'>
-  <button disabled={!loaded} class='left'>
+  <button onclick={prev} disabled={!loaded} class='left'>
     <Fa icon={faArrowLeft} />
   </button>
   <article class='center'>
       {#if !loaded}
       <div class='empty'>
-        <button onclick={load}>Load Resources</button>
+        <button disabled={sols.length == 0} onclick={load}>Load Resources</button>
         <p>Select standards, then click above to search!</p>
       </div>
       {:else}
-      <!-- <div class='thumbnail'>
+      <div class='thumbnail'>
         <img src="https://curriculum.codevirginia.org/thumbnails/1_NNnWXrd5p8tU29M0L1M_lBuXGGJXRczbqOvGy-ZsOQ.png" />
-      </div> -->
-      <div class='info'>
-        <span class='card-title'>{lessons[0].frontmatter.title}</span>
-        <p>{@html lessons[0].content.replaceAll("<h2>Summary</h2>", "").replaceAll("<h2>Overview</h2>", "")}</p>
-        <!-- <ul>
-          <li><strong>Grade: </strong>XX</li>
-          <li><strong>Subjects: </strong>XX</li>
-          <li><strong>SOLs: </strong>XX</li>
-        </ul> -->
-        <a role="button" href="{lessons[0].frontmatter.links.drive}" target="_blank">View Details</a>
       </div>
+          <div class='info'>
+            <span class='card-title'>{lessons[position].title}</span>
+            <!-- <p>{@html lessons[0].content.replaceAll("<h2>Summary</h2>", "").replaceAll("<h2>Overview</h2>", "")}</p> -->
+            <p>Check out this lesson from CodeVA!</p>
+            <!-- <ul>
+              <li><strong>Grade: </strong> {lessons[0].grades}</li>
+              <li><strong>Subjects: </strong> {lessons[0].subjects}</li>
+              <li><strong>SOLs: </strong> {lessons[0].standards}</li>
+            </ul> -->
+            <a role="button" href="{lessons[position].links.drive}" target="_blank">View Details</a>
+          </div>
     {/if}
   </article>
-  <button disabled={!loaded} class='right'>
+  <button onclick={next} disabled={!loaded} class='right'>
     <Fa icon={faArrowRight} />
   </button>
 </div>
 <style lang='scss'>
   @use "$lib/styles/theme.scss";
+  .thumbnail > img {
+    width: 100px;
+  }
   .card-title {
     font-family: theme.$title-font;
     font-size: 14pt;
@@ -102,10 +116,6 @@
     flex-grow: 0;
     // background-color: powderblue;
     // min-width: 200px;
-    img {
-      height: 160px;
-      min-width: 108px;
-    }
   }
   ul {
     position: relative;
@@ -126,6 +136,8 @@
     button {
       background-color: white;
       color: black;
+      font-size: 12pt;
+      padding: 10px 1rem;
     }
   }
 </style>

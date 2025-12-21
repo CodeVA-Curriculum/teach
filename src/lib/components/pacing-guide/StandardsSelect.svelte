@@ -21,9 +21,22 @@
         delete standards["courseToSubjectMap"]
         workingObj = standards
     })
-    function nav(key:string, value:any) {
-        indices.push(key)
-        workingObj = value
+    function nav(key:string, value?:any) {
+        if(!indices.includes(key)) {
+            indices.push(key)
+        } else {
+            // remove everything after the one that was clicked
+            const i = indices.indexOf(key)
+            indices.splice(i+1)
+            if(i == 0 && indices.length == 1) {
+                indices = []
+            }
+        }
+        let wo = standards
+        for(let i=0;i<indices.length;i++) {
+            wo = wo[indices[i]]
+        }
+        workingObj = wo
     }
     function edit() { open = true }
     function close() { open = false }
@@ -50,16 +63,13 @@
     }
 </script>
 
-{#if selected.length == 0}
 <button class='empty' onclick={edit}>
     <Fa icon={faAdd} />
     <span>Add</span>
 </button>
-{:else}
 {#each selected as obj}
 <span class='tag'>{obj["id"]} <button onclick={() => remove(obj)} class='icon'><Fa icon={faX} size=0.25/></button></span>
 {/each}
-{/if}
 
 <dialog open={open}>
   <article>
@@ -67,7 +77,7 @@
         <nav aria-label="breadcrumb">
             <ul>
                 {#each indices as index}
-                <li><a>{index}</a></li>
+                <li><a onclick={() => nav(index)}>{index}</a></li>
                 {/each}
             </ul>
             
@@ -108,7 +118,9 @@
     .empty {
         background-color: white;
         color: black;
-
+        padding: 10px 1rem;
+        font-size: 12pt;
+        margin-bottom: 0.5rem;
     }
     header {
         height: 4rem;
