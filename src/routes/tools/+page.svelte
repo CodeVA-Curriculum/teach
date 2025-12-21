@@ -23,6 +23,10 @@
 </div>
 
 <style lang='scss'>
+  @use "$lib/styles/theme.scss";
+  a {
+    background-color: theme.$navy;
+  }
   article {
     display: flex;
     gap: 1.5rem;
